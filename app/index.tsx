@@ -26,7 +26,10 @@ type CheckInRecord = {
 export default function HomeScreen() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
-    const [checkInMessage, setCheckInMessage] = useState<string | null>(null);
+    const [checkInInfo, setCheckInInfo] = useState<{
+        lastTimestamp?: string;
+    } | null>(null);
+
 
 
     const handleCheckIn = async () => {
@@ -56,14 +59,11 @@ export default function HomeScreen() {
             );
 
             if (previousTimestamp) {
-                setCheckInMessage(
-                    `You're all checked in. Have a good day!\nThe last time you checked in was ${new Date(
-                        previousTimestamp
-                    ).toLocaleString()}.`
-                );
+                setCheckInInfo({ lastTimestamp: previousTimestamp });
             } else {
-                setCheckInMessage("You're all checked in. Have a good day!");
+                setCheckInInfo({});
             }
+
         } catch (err) {
             console.warn('Failed to save check-in', err);
         }
@@ -137,11 +137,25 @@ export default function HomeScreen() {
                 </View>
             </View>
 
-            {checkInMessage && (
-                <View style={styles.noticeBox}>
-                    <Text style={styles.noticeText}>{checkInMessage}</Text>
+            {checkInInfo && (
+                <View style={styles.checkInCard}>
+                    <Text style={styles.checkInPrimary}>
+                        You’re all set
+                    </Text>
+
+                    {checkInInfo.lastTimestamp && (
+                        <Text style={styles.checkInSecondary}>
+                            Last check-in:{" "}
+                            {new Date(checkInInfo.lastTimestamp).toLocaleDateString()} at{" "}
+                            {new Date(checkInInfo.lastTimestamp).toLocaleTimeString([], {
+                                hour: 'numeric',
+                                minute: '2-digit',
+                            })}
+                        </Text>
+                    )}
                 </View>
             )}
+
             {/* Info Message */}
             <View style={styles.noticeBox}>
                 <Text style={styles.noticeIcon}>!</Text>

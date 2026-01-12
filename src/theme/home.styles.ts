@@ -80,4 +80,38 @@ export const styles = StyleSheet.create({
         fontSize: 13,
         lineHeight: 18,
     },
+    checkInCard_old: {
+        backgroundColor: '#F2FBF7',
+        borderRadius: 16,
+        paddingVertical: 16,
+        paddingHorizontal: 18,
+        marginTop: 20,
+    },
+
+    checkInCard: {
+        position: 'absolute',
+        top: '72%',          // ← CHANGE THIS NUMBER
+        alignSelf: 'center',
+
+        backgroundColor: '#F2FBF7',
+        borderRadius: 16,
+        paddingVertical: 16,
+        paddingHorizontal: 18,
+    },
+
+    checkInPrimary: {
+        fontSize: 20,
+        fontWeight: '600',
+        color: '#2E7D63',
+        lineHeight: 28,
+    },
+
+    checkInSecondary: {
+        marginTop: 6,
+        fontSize: 13,
+        fontWeight: '400',
+        color: '#9CA3AF',
+        lineHeight: 18,
+    },
+
 });
