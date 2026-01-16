@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-    View,
-    Text,
-    TouchableOpacity,
-    TextInput,
-    KeyboardAvoidingView,
-    Platform,
-} from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from '@/src/theme/home.styles';
 import * as Application from 'expo-application';
