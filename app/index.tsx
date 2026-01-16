@@ -9,6 +9,14 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from '@/src/theme/home.styles';
+import * as Application from 'expo-application';
+import { saveCheckInToFirestore } from '../src/saveCheckIn';
+
+const deviceId =
+    Application.getAndroidId() ??
+    Application.getIosIdForVendorAsync?.() ??
+    'unknown-device';
+
 
 const STORAGE_KEYS = {
     name: 'user_name',
@@ -57,6 +65,14 @@ export default function HomeScreen() {
                 STORAGE_KEYS.currentCheckIn,
                 JSON.stringify(newRecord)
             );
+
+
+            // 🔹 ADD: Firestore save (non-blocking optional)
+            await saveCheckInToFirestore({
+                deviceId: String(deviceId),
+                name,
+                email,
+            });
 
             if (previousTimestamp) {
                 setCheckInInfo({ lastTimestamp: previousTimestamp });
