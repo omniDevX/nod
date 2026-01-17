@@ -1,0 +1,21 @@
+name: Test Email
+
+on:
+  workflow_dispatch:   # allows manual trigger
+
+jobs:
+  send-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install mail client
+        run: sudo apt-get update && sudo apt-get install -y msmtp-mta
+
+      - name: Send test email
+        run: |
+          echo -e "Subject: Test Email from GitHub Actions\n\nThis is a test email from GitHub Actions" | \
+          msmtp --host=smtp-relay.brevo.com --port=587 \
+                --auth=on --user=a04344001@smtp-brevo.com \
+                --passwordeval="echo 'axxxxxxxxxxxxxxxxxxxxxxxxx'" \
+                --tls=on \
+                --from=nod.aidres@aidres.com \
+                omnidevx@gmail.com
