@@ -25,6 +25,9 @@ jobs:
           port    587
           from    nod.aidres@aidres.com
           user    a04344001@smtp-brevo.com
+          password ${{
+            secrets.BREVO_SMTP_PASSWORD
+          }}
 
           account default : brevo
           EOF
