@@ -33,5 +33,5 @@ jobs:
 
       - name: Send test email
         run: |
-          echo -e "Subject: Test Email from GitHub Actions\n\nThis is a test email from GitHub Actions" | \
+          echo -e "Subject: Test Email2 from GitHub Actions\n\nThis is a test email from GitHub Actions" | \
           msmtp omnidevx@gmail.com
