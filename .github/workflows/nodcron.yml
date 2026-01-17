@@ -1,0 +1,22 @@
+name: Daily Cron Job 
+
+on:
+  schedule:
+    # Runs every 8 minutes
+    - cron: '*/8 * * * *' 
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Run a simple script
+        run: echo "Scheduled job ran at $(date -u)"
+
+      - name: Ping webhook
+        run: |
+          curl -X POST https://webhook.site/05b9e90e-14d6-440a-8d48-eb84a40c5a86 \
+            -H "Content-Type: application/json" \
+            -d "{\"ran_at\":\"$(date -u)\"}"
+
