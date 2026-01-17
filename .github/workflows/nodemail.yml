@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Install msmtp
         run: sudo apt-get update && sudo apt-get install -y msmtp-mta
-asd
+
       - name: Setup msmtp config
         run: |
           mkdir -p ~/.msmtp
@@ -35,5 +35,5 @@ asd
 
       - name: Send test email
         run: |
-          echo -e "Subject: Test Email2 from GitHub Actions\n\nThis is a test email from GitHub Actions" | \
+          echo -e "Subject: Test Email3 from GitHub Actions\n\nThis is a test email from GitHub Actions" | \
           msmtp omnidevx@gmail.com
