@@ -25,7 +25,9 @@ jobs:
           port    587
           from    nod.aidres@aidres.com
           user    a04344001@smtp-brevo.com
-          password axxxxxxxxxxxxxxxxxxxxxxxxx
+          password ${{
+            secrets.BREVO_SMTP_PASSWORD
+          }}
 
           account default : brevo
           EOF
@@ -33,5 +35,5 @@ jobs:
 
       - name: Send test email
         run: |
-          echo -e "Subject: Test Email from GitHub Actions\n\nThis is a test email from GitHub Actions" | \
+          echo -e "Subject: Test Email2 from GitHub Actions\n\nThis is a test email from GitHub Actions" | \
           msmtp omnidevx@gmail.com
