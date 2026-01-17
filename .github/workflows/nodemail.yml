@@ -1,21 +1,37 @@
-name: Test Email
+name: Simple Email Test
 
 on:
-  workflow_dispatch:   # allows manual trigger
+  workflow_dispatch:  # allows you to run manually
 
 jobs:
-  send-test:
+  send-test-email:
     runs-on: ubuntu-latest
     steps:
-      - name: Install mail client
+      - name: Install msmtp
         run: sudo apt-get update && sudo apt-get install -y msmtp-mta
+
+      - name: Setup msmtp config
+        run: |
+          mkdir -p ~/.msmtp
+          cat <<EOF > ~/.msmtprc
+          defaults
+          auth           on
+          tls            on
+          tls_trust_file /etc/ssl/certs/ca-certificates.crt
+          logfile        ~/.msmtp.log
+
+          account brevo
+          host    smtp-relay.brevo.com
+          port    587
+          from    nod.aidres@aidres.com
+          user    a04344001@smtp-brevo.com
+          password axxxxxxxxxxxxxxxxxxxxxxxxx
+
+          account default : brevo
+          EOF
+          chmod 600 ~/.msmtprc
 
       - name: Send test email
         run: |
           echo -e "Subject: Test Email from GitHub Actions\n\nThis is a test email from GitHub Actions" | \
-          msmtp --host=smtp-relay.brevo.com --port=587 \
-                --auth=on --user=a04344001@smtp-brevo.com \
-                --passwordeval="echo 'axxxxxxxxxxxxxxxxxxxxxxxxx'" \
-                --tls=on \
-                --from=nod.aidres@aidres.com \
-                omnidevx@gmail.com
+          msmtp omnidevx@gmail.com
