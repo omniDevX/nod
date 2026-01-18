@@ -30,8 +30,8 @@ async function sendEmail(email) {
     await transporter.sendMail({
         from: '"Nod" <nod.aidres@aidres.com>',
         to: email,
-        subject: "We miss you!",
-        text: "You have been inactive for more than 48 hours.",
+        subject: "URGENT: Please check on [Your Name] immediately (Automated Message)!",
+        text: "I have not been able to check in for over 48 hours. This is the alert I set up for you. Please reach out to me or come by my place to check on me.",
     });
 
     console.log(`Sent → ${email}`);
