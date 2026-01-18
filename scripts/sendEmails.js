@@ -3,8 +3,8 @@ const admin = require("firebase-admin");
 const nodemailer = require("nodemailer");
 
 // ===== Firebase init =====
-const serviceAccount = require("./serviceAccount.json"); // local
-// const serviceAccount = JSON.parse(Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT, "base64").toString("utf8")); // GitHub
+// const serviceAccount = require("./serviceAccount.json"); // local
+const serviceAccount = JSON.parse(Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT, "base64").toString("utf8")); // GitHub
 
 if (!admin.apps.length) {
     admin.initializeApp({
@@ -28,7 +28,7 @@ const transporter = nodemailer.createTransport({
 // ===== Email function =====
 async function sendEmail(email) {
     await transporter.sendMail({
-        from: '"Aidres" <nod.aidres@aidres.com>',
+        from: '"Nod" <nod.aidres@aidres.com>',
         to: email,
         subject: "We miss you!",
         text: "You have been inactive for more than 48 hours.",
