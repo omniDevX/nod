@@ -1,22 +1,23 @@
 // index.js
-// const doten = require("dotenv").config();
+const doten = require("dotenv").config();
 const admin = require('firebase-admin');
 const nodemailer = require("nodemailer");
 
+let serviceAccount;
 
-// const serviceAccount = require('./serviceAccount.json'); // Path to your downloaded JSON file
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-console.log('Service Account loaded successfully!',serviceAccount);
-
+if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+    serviceAccount = JSON.parse(Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT, "base64").toString("utf8"));// GitHub Actions
+} else {
+    serviceAccount = require("./serviceAccount.json");// Local development
+}
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    // databaseURL: "https://<DATABASE_NAME>.firebaseio.com" // For Realtime DB only
 });
 
-console.log('Firebase Admin SDK initialized successfully!');
+console.log('Service Account loaded successfully!', serviceAccount);
 
-// Access Firestore
+admin.initializeApp({ credential: admin.credential.cert(serviceAccount), });
 const db = admin.firestore();
 
 // List all top-level collections
@@ -58,7 +59,7 @@ async function run() {
     //     const last = lastActive.toDate();
     //     if (now - last.getTime() > THRESHOLD_MS) {
     const email = "aidres@aidres.com"
-    
+
     await transporter.sendMail({
         from: '"Aidres" <nod.aidres@aidres.com>',
         to: email,
