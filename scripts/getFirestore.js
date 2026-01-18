@@ -54,3 +54,29 @@ async function getInactiveCheckIns(hours = 48) {
     console.log(`Found ${inactiveUsers.length} users older than 84 hours`);
     inactiveUsers.forEach(u => console.log(u.email, u.timestamp));
 })();
+
+
+async function sendEmail(email) {
+    await transporter.sendMail({
+        from: '"Aidres" <nod.aidres@aidres.com>',
+        to: email,
+        subject: "We miss you!",
+        text: "You have been inactive for more than 48 hours.",
+    });
+
+    console.log(`Sent → ${email}`);
+}
+
+
+async function run() {
+    const emails = [
+        "aidres@aidres.com",
+        // later: from Firestore
+    ];
+
+    for (const email of emails) {
+        await sendEmail(email);
+    }
+
+    await transporter.close();
+}
