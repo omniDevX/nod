@@ -3,20 +3,8 @@ const doten = require("dotenv").config();
 const admin = require('firebase-admin');
 const nodemailer = require("nodemailer");
 
-let serviceAccount;
-
-if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-    serviceAccount = JSON.parse(Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT, "base64").toString("utf8"));// GitHub Actions
-} else {
-    serviceAccount = require("./serviceAccount.json");// Local development
-}
-
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-});
-
-console.log('Service Account loaded successfully!', serviceAccount);
-
+// serviceAccount = require("./serviceAccount.json");// Local development
+serviceAccount = JSON.parse(Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT, "base64").toString("utf8"));// GitHub Actions
 admin.initializeApp({ credential: admin.credential.cert(serviceAccount), });
 const db = admin.firestore();
 
