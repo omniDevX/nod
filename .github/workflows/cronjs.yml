@@ -2,8 +2,7 @@ name: Send Inactive Emails
 
 on:
   schedule:
-    # - cron: '0 */2 * * *'
-    - cron: '*/3 * * * *' 
+    - cron: '0 */2 * * *'
 
   workflow_dispatch:
 

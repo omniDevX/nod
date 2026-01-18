@@ -1,29 +1,20 @@
-// index.js
-const doten = require("dotenv").config();
-const admin = require('firebase-admin');
+require("dotenv").config();
+const admin = require("firebase-admin");
 const nodemailer = require("nodemailer");
 
-// serviceAccount = require("./serviceAccount.json");// Local development
-serviceAccount = JSON.parse(Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT, "base64").toString("utf8"));// GitHub Actions
-admin.initializeApp({ credential: admin.credential.cert(serviceAccount), });
-const db = admin.firestore();
+// ===== Firebase init =====
+const serviceAccount = require("./serviceAccount.json"); // local
+// const serviceAccount = JSON.parse(Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT, "base64").toString("utf8")); // GitHub
 
-// List all top-level collections
-async function listCollections() {
-    try {
-        const collections = await db.listCollections();
-        console.log('Collections in Firestore:');
-        collections.forEach(col => console.log('-', col.id));
-    } catch (err) {
-        console.error('Error listing collections:', err);
-    }
+if (!admin.apps.length) {
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+    });
 }
 
-// Run the function
-listCollections();
+const db = admin.firestore();
 
-console.log('Starting email sending script...', process.env.BREVO_SMTP_SERVER);
-
+// ===== Mailer init =====
 const transporter = nodemailer.createTransport({
     host: process.env.BREVO_SMTP_SERVER,
     port: Number(process.env.BREVO_SMTP_PORT),
@@ -34,34 +25,55 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-// const THRESHOLD_MS = 48 * 60 * 60 * 1000; // 48 hours
-
-async function run() {
-    // const now = Date.now();
-    // const snapshot = await db.collection("users").get();
-
-    // for (const doc of snapshot.docs) {
-    //     const { email, lastActive } = doc.data();
-    //     if (!email || !lastActive) continue;
-
-    //     const last = lastActive.toDate();
-    //     if (now - last.getTime() > THRESHOLD_MS) {
-    const email = "aidres@aidres.com"
-
+// ===== Email function =====
+async function sendEmail(email) {
     await transporter.sendMail({
         from: '"Aidres" <nod.aidres@aidres.com>',
         to: email,
-        subject: "We miss you2!",
+        subject: "We miss you!",
         text: "You have been inactive for more than 48 hours.",
     });
+
     console.log(`Sent → ${email}`);
+}
+
+// ===== Firestore query =====
+async function getInactiveCheckIns(hours = 48) {
+    const cutoff = admin.firestore.Timestamp.fromMillis(
+        Date.now() - hours * 60 * 60 * 1000
+    );
+
+    const snapshot = await db
+        .collection("checkIns")
+        .where("timestamp", "<=", cutoff)
+        .get();
+
+    return snapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+            deviceId: doc.id,
+            email: data.email,
+            timestamp: data.timestamp.toDate(),
+        };
+    });
+}
+
+// ===== Orchestrator =====
+async function run() {
+    const inactiveUsers = await getInactiveCheckIns(48);
+
+    console.log(`Found ${inactiveUsers.length} outdated records`);
+
+    for (const user of inactiveUsers) {
+        if (!user.email) continue;
+        await sendEmail(user.email);
+    }
+
     await transporter.close();
 }
-//     }
-// }
 
-run().catch((err) => {
+// ===== Entry point =====
+run().catch(err => {
     console.error(err);
     process.exit(1);
 });
-
