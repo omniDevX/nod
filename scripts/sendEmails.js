@@ -70,7 +70,6 @@ run().catch((err) => {
     console.error(err);
     process.exit(1);
 });
-=======
 
 // // index.js
 // const admin = require('firebase-admin');
@@ -159,4 +158,3 @@ run().catch((err) => {
 //     console.error(err);
 //     process.exit(1);
 // });
->>>>>>> faff61b25dd111ba818ded1338910caeeb78c62c
