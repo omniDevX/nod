@@ -1,5 +1,5 @@
 // index.js
-const doten = require("dotenv").config();
+// const doten = require("dotenv").config();
 const admin = require('firebase-admin');
 const nodemailer = require("nodemailer");
 
