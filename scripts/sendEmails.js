@@ -6,6 +6,7 @@ const nodemailer = require("nodemailer");
 
 // const serviceAccount = require('./serviceAccount.json'); // Path to your downloaded JSON file
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+console.log('Service Account loaded successfully!',serviceAccount);
 
 
 admin.initializeApp({
