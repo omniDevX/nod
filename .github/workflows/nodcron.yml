@@ -3,7 +3,7 @@ name: Daily Cron Job
 on:
   schedule:
     # Runs every 8 minutes
-    - cron: '*/8 * * * *' 
+    - cron: '* */18 * * *' 
 
 jobs:
   run-script:
