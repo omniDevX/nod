@@ -1,14 +1,9 @@
 // index.js
-<<<<<<< HEAD
 require("dotenv").config();
 const admin = require('firebase-admin');
 const serviceAccount = require('./serviceAccount.json'); // Path to your downloaded JSON file
 const nodemailer = require("nodemailer");
 
-=======
-const admin = require('firebase-admin');
-const serviceAccount = require('../src/serviceAccount.json'); // Path to your downloaded JSON file
->>>>>>> faff61b25dd111ba818ded1338910caeeb78c62c
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -34,7 +29,6 @@ async function listCollections() {
 // Run the function
 listCollections();
 
-<<<<<<< HEAD
 console.log('Starting email sending script...', process.env.BREVO_SMTP_SERVER);
 
 const transporter = nodemailer.createTransport({
