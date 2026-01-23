@@ -30,7 +30,7 @@ async function sendEmail(email) {
     await transporter.sendMail({
         from: '"Nod" <nod.aidres@aidres.com>',
         to: email,
-        subject: "URGENT: Please check on [Your Name] immediately (Automated Message)!",
+        subject: "URGENT: Please check on me immediately (Automated Message)!",
         text: "I have not been able to check in for over 48 hours. This is the alert I set up for you. Please reach out to me or come by my place to check on me.",
     });
 
